@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Logo from "../assets/shared/logo.svg";
+// import Logo from "../assets/shared/logo.svg";
 
 function Header() {
   return (
     <Div>
-      <Img src={Logo} />
+      <Img src={"../assets/shared/logo.svg"} />
       <P>start slideshow</P>
     </Div>
   );
