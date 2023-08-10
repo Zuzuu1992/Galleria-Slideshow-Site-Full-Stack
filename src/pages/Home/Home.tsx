@@ -1,21 +1,17 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { Painting } from "../../types";
 
 // import Header from "../../components/Header";
 
-interface Painting {
-  name: string;
-  images: {
-    thumbnail: string;
-  };
-  artist: {
-    name: string;
-  };
+interface HomeProps {
+  paintings: Painting[];
+  setPaintings: React.Dispatch<React.SetStateAction<Painting[]>>;
 }
 
-const Home: React.FC = () => {
-  const [paintings, setPaintings] = useState<Painting[]>([]);
+const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
+  // const [paintings, setPaintings] = useState<Painting[]>([]);
 
   useEffect(() => {
     async function getPaintings() {
@@ -39,7 +35,7 @@ const Home: React.FC = () => {
       <Line></Line>
       <Gallery className="paintings-container">
         {paintings.map((painting) => (
-          <Painting key={painting.name} className="painting">
+          <PaintingSection key={painting.name} className="painting">
             <ImageWrapper>
               <Image src={painting.images.thumbnail} alt={painting.name} />
               <Overlay></Overlay>
@@ -48,7 +44,7 @@ const Home: React.FC = () => {
               <Masterpiece>{painting.name}</Masterpiece>
               <Artist>{painting.artist.name}</Artist>
             </Text>
-          </Painting>
+          </PaintingSection>
         ))}
       </Gallery>
     </>
@@ -70,7 +66,7 @@ const Gallery = styled.div`
   padding: 24px;
 `;
 
-const Painting = styled.div`
+const PaintingSection = styled.div`
   position: relative;
   width: 100%;
 `;

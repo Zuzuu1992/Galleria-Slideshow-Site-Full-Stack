@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import Header from "./components/Header";
+import { Painting } from "./types";
 
 const Home = lazy(() => import("./pages/Home/Home"));
+const Slideshow = lazy(() => import("./pages/Slideshow/Slideshow"));
 
 function App() {
+  const [paintings, setPaintings] = useState<Painting[]>([]);
   return (
     <Main>
       <Header></Header>
@@ -14,7 +17,15 @@ function App() {
           path="/"
           element={
             <Suspense fallback={"Loading..."}>
-              <Home />
+              <Home paintings={paintings} setPaintings={setPaintings} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/slideshow/:index"
+          element={
+            <Suspense fallback={"Loading..."}>
+              <Slideshow paintings={paintings} setPaintings={setPaintings} />
             </Suspense>
           }
         />
