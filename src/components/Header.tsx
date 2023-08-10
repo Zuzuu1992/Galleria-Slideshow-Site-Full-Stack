@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-// import Logo from "../assets/shared/logo.svg";
+import Logo from "../assets/logo.svg";
 
 function Header() {
   return (
     <Div>
-      <Img src={"../assets/shared/logo.svg"} />
+      <Img src={Logo} />
       <Link to="/slideshow/0">
         <P>start slideshow</P>
       </Link>

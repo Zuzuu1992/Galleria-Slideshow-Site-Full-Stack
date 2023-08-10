@@ -42,11 +42,21 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
           {paintings.map((painting, idx) => (
             <div key={painting.name}>
               <Slide>
-                <Image src={painting.images.hero.small} />
+                <Image
+                  src={
+                    "https://galleria-arzk.onrender.com" +
+                    painting.images.hero.small
+                  }
+                />
                 <Text>
                   <Title>{painting.name}</Title>
                   <Artist>{painting.artist.name}</Artist>
-                  <ArtistImage src={painting.artist.image} />
+                  <ArtistImage
+                    src={
+                      "https://galleria-arzk.onrender.com" +
+                      painting.artist.image
+                    }
+                  />
                   <Year> {painting.year}</Year>
                   <Description>{painting.description}</Description>
                 </Text>
@@ -69,7 +79,12 @@ const CustomCarousel = styled(Carousel)`
   .carousel .control-dots {
     display: none;
   }
+  .carousel .slide img {
+    width: 64px;
+    height: 64px;
+  }
 `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -103,14 +118,13 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
 `;
 
 const Image = styled.img`
-  /* max-height: 100%;
-  max-width: 100%; */
+  /* width: 100%; */
 `;
 
 const Text = styled.div`
-  position: absolute;
-  bottom: 70px;
-  left: 0px;
+  /* position: absolute; */
+  /* bottom: 70px;
+  left: 0px; */
   color: white;
 `;
 
@@ -132,7 +146,11 @@ const Artist = styled.p`
   line-height: normal;
 `;
 
-const ArtistImage = styled.img``;
+const ArtistImage = styled.img`
+  /* width: 64px;
+  height: 64px; */
+`;
+
 const Year = styled.h1`
   color: #f3f3f3;
   text-align: right;

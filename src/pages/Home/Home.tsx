@@ -37,7 +37,13 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
         {paintings.map((painting) => (
           <PaintingSection key={painting.name} className="painting">
             <ImageWrapper>
-              <Image src={painting.images.thumbnail} alt={painting.name} />
+              <Image
+                src={
+                  "https://galleria-arzk.onrender.com" +
+                  painting.images.thumbnail
+                }
+                alt={painting.name}
+              />
               <Overlay></Overlay>
             </ImageWrapper>
             <Text>
