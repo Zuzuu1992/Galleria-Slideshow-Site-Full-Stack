@@ -4,6 +4,8 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styled from "styled-components";
 import { Painting } from "../../types";
+import BackButton from "../../assets/icon-back-button.svg";
+import NextButton from "../../assets/icon-next-button.svg";
 
 interface SlideIndicatorProps {
   percent: number;
@@ -29,44 +31,67 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
 
   const slidePercentage = (currentSlide / totalSlides) * 100;
 
+  const currentPainting = paintings[currentIndex];
+
   return (
-    <Container>
-      <CarouselWrapper style={{ width: "100%", margin: "0 auto" }}>
-        <CustomCarousel
-          selectedItem={currentIndex}
-          onChange={handleSlideChange}
-          showThumbs={false}
-          showStatus={false}
-          infiniteLoop
+    <>
+      <Container className="1">
+        <CarouselWrapper
+          style={{ width: "100%", margin: "0 auto" }}
+          className="2"
         >
-          {paintings.map((painting, idx) => (
-            <div key={painting.name}>
-              <Slide>
-                <Image
-                  src={
-                    "https://galleria-arzk.onrender.com" +
-                    painting.images.hero.small
-                  }
-                />
-                <Text>
-                  <Title>{painting.name}</Title>
-                  <Artist>{painting.artist.name}</Artist>
-                  <ArtistImage
+          <CustomCarousel
+            className="3"
+            selectedItem={currentIndex}
+            onChange={handleSlideChange}
+            showThumbs={false}
+            showStatus={false}
+            infiniteLoop
+          >
+            {paintings.map((painting, idx) => (
+              <div key={painting.name} className="4">
+                <Slide className="5">
+                  <Image
                     src={
                       "https://galleria-arzk.onrender.com" +
-                      painting.artist.image
+                      painting.images.hero.small
                     }
                   />
-                  <Year> {painting.year}</Year>
-                  <Description>{painting.description}</Description>
-                </Text>
-              </Slide>
-            </div>
-          ))}
-        </CustomCarousel>
+                  <Text>
+                    <Title>{painting.name}</Title>
+                    <Artist>{painting.artist.name}</Artist>
+                    <ArtistImage
+                      src={
+                        "https://galleria-arzk.onrender.com" +
+                        painting.artist.image
+                      }
+                    />
+                    <Year> {painting.year}</Year>
+                    <Description>{painting.description}</Description>
+                  </Text>
+                </Slide>
+              </div>
+            ))}
+          </CustomCarousel>
+        </CarouselWrapper>
+      </Container>
+      <LineWrapper>
+        <Line></Line>
         <SlideIndicator percent={slidePercentage} />
-      </CarouselWrapper>
-    </Container>
+      </LineWrapper>
+      <Footer>
+        {currentPainting && (
+          <FooterText>
+            <FooterTitle>{currentPainting.name}</FooterTitle>
+            <FooterArtist>{currentPainting.artist.name}</FooterArtist>
+          </FooterText>
+        )}
+        <SlideArrows>
+          <img src={BackButton} />
+          <img src={NextButton} />
+        </SlideArrows>
+      </Footer>
+    </>
   );
 };
 
@@ -79,9 +104,8 @@ const CustomCarousel = styled(Carousel)`
   .carousel .control-dots {
     display: none;
   }
-  .carousel .slide img {
-    width: 64px;
-    height: 64px;
+  && .carousel .control-arrow {
+    display: none;
   }
 `;
 
@@ -90,7 +114,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   /* background-color: black; */
   padding: 24px;
   width: 100%;
@@ -101,7 +125,7 @@ const Slide = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: auto;
   position: relative;
   width: 100%;
   /* background-color: red; */
@@ -109,7 +133,7 @@ const Slide = styled.div`
 
 const SlideIndicator = styled.div<SlideIndicatorProps>`
   position: absolute;
-  bottom: -30%;
+  bottom: 100%;
   left: 0;
   height: 4px;
   width: ${(props) => (props.percent || 0) + "%"};
@@ -118,13 +142,10 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
 `;
 
 const Image = styled.img`
-  /* width: 100%; */
+  width: 100%;
 `;
 
 const Text = styled.div`
-  /* position: absolute; */
-  /* bottom: 70px;
-  left: 0px; */
   color: white;
 `;
 
@@ -147,8 +168,8 @@ const Artist = styled.p`
 `;
 
 const ArtistImage = styled.img`
-  /* width: 64px;
-  height: 64px; */
+  width: 64px !important;
+  height: 64px !important;
 `;
 
 const Year = styled.h1`
@@ -168,6 +189,55 @@ const Description = styled.p`
   font-style: normal;
   font-weight: 700;
   line-height: 28px;
+`;
+
+const Footer = styled.footer`
+  width: 100%;
+  height: 10%;
+  padding: 17px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LineWrapper = styled.div`
+  position: relative;
+`;
+
+const Line = styled.div`
+  background-color: #e5e5e5;
+  height: 1px;
+  width: 100%;
+  /* position: relative; */
+`;
+
+const FooterText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+`;
+
+const FooterTitle = styled.h2`
+  color: #000;
+  font-family: Libre Baskerville;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
+const FooterArtist = styled.p`
+  color: #000;
+  font-family: Libre Baskerville;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  opacity: 0.7528279423713684;
+`;
+
+const SlideArrows = styled.div`
+  display: flex;
+  gap: 24px;
 `;
 
 export default Slideshow;
