@@ -116,13 +116,15 @@ const Slideshow: React.FC<SlideshowProps> = ({
                       }
                     />
                   </Intro>
-                  <Year> {painting.year}</Year>
-                  <Description>{painting.description}</Description>
-                  {sourceUrl && (
-                    <SourceLink href={sourceUrl} target="_blank">
-                      GO TO SOURCE
-                    </SourceLink>
-                  )}
+                  <TextSection>
+                    <Year> {painting.year}</Year>
+                    <Description>{painting.description}</Description>
+                    {sourceUrl && (
+                      <SourceLink href={sourceUrl} target="_blank">
+                        GO TO SOURCE
+                      </SourceLink>
+                    )}
+                  </TextSection>
                   {/* </Text> */}
                 </Slide>
               </div>
@@ -139,7 +141,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
         <EnlargedImageOverlay>
           <Close onClick={toggleEnlargedImage}>close</Close>
           <EnlargedImage
-            src={`https://galleria-arzk.onrender.com${paintings[currentIndex].images.hero.small}`}
+            src={`https://galleria-arzk.onrender.com${paintings[currentIndex].images.gallery}`}
           />
         </EnlargedImageOverlay>
       )}
@@ -290,6 +292,12 @@ const ArtistImage = styled.img`
   height: 64px !important;
 
   margin-left: 16px;
+`;
+
+const TextSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
 `;
 
 const Year = styled.h1`
