@@ -82,29 +82,31 @@ const Slideshow: React.FC<SlideshowProps> = ({
             {paintings.map((painting, idx) => (
               <div key={painting.name} className="4">
                 <Slide className="5">
-                  <ImageSet>
-                    <Image
+                  <Intro>
+                    <ImageSet>
+                      <Image
+                        src={
+                          "https://galleria-arzk.onrender.com" +
+                          painting.images.hero.small
+                        }
+                      />
+                      {/* <Text> */}
+                      <Enlarge onClick={toggleEnlargedImage}>
+                        <ViewImage />
+                        <ViewText>View Image</ViewText>
+                      </Enlarge>
+                      <WhiteBack>
+                        <Title>{painting.name}</Title>
+                        <Artist>{painting.artist.name}</Artist>
+                      </WhiteBack>
+                    </ImageSet>
+                    <ArtistImage
                       src={
                         "https://galleria-arzk.onrender.com" +
-                        painting.images.hero.small
+                        painting.artist.image
                       }
                     />
-                    {/* <Text> */}
-                    <Enlarge onClick={toggleEnlargedImage}>
-                      <ViewImage />
-                      <ViewText>View Image</ViewText>
-                    </Enlarge>
-                    <WhiteBack>
-                      <Title>{painting.name}</Title>
-                      <Artist>{painting.artist.name}</Artist>
-                    </WhiteBack>
-                  </ImageSet>
-                  <ArtistImage
-                    src={
-                      "https://galleria-arzk.onrender.com" +
-                      painting.artist.image
-                    }
-                  />
+                  </Intro>
                   <Year> {painting.year}</Year>
                   <Description>{painting.description}</Description>
                   {/* </Text> */}
@@ -180,7 +182,7 @@ const Slide = styled.div`
   /* align-items: center;
   justify-content: center; */
   height: auto;
-  position: relative;
+  /* position: relative; */
   width: 100%;
   /* background-color: red; */
 `;
@@ -189,7 +191,7 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
   position: absolute;
   bottom: 100%;
   left: 0;
-  height: 4px;
+  height: 2px;
   width: ${(props) => (props.percent || 0) + "%"};
   background-color: #000;
   transition: width 0.3s ease-in-out;
@@ -197,6 +199,12 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
 
 const Image = styled.img`
   width: 100%;
+`;
+
+const Intro = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 `;
 
 const ImageSet = styled.div`
@@ -233,8 +241,8 @@ const ViewText = styled.p`
 const WhiteBack = styled.div`
   background-color: white;
   position: absolute;
-  bottom: -18%;
-  left: 0px;
+  /* bottom: -18%;
+  left: 0px; */
   padding: 24px;
   width: 85%;
   display: flex;
@@ -242,6 +250,7 @@ const WhiteBack = styled.div`
   align-items: flex-start;
   gap: 8px;
   text-align: left;
+  transform: translate(0%, -52%);
 `;
 
 const Title = styled.h2`
@@ -265,7 +274,7 @@ const Artist = styled.p`
 const ArtistImage = styled.img`
   width: 64px !important;
   height: 64px !important;
-  margin-top: 50px;
+
   margin-left: 16px;
 `;
 
