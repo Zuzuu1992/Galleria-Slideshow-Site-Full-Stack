@@ -9,9 +9,15 @@ const Slideshow = lazy(() => import("./pages/Slideshow/Slideshow"));
 
 function App() {
   const [paintings, setPaintings] = useState<Painting[]>([]);
+  const [slideshowRunning, setSlideshowRunning] = useState(false);
+  const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+
   return (
     <Main>
-      <Header></Header>
+      <Header
+        slideshowRunning={slideshowRunning}
+        setSlideshowRunning={setSlideshowRunning}
+      />
       <Routes>
         <Route
           path="/"
@@ -25,7 +31,12 @@ function App() {
           path="/slideshow/:index"
           element={
             <Suspense fallback={"Loading..."}>
-              <Slideshow paintings={paintings} setPaintings={setPaintings} />
+              <Slideshow
+                paintings={paintings}
+                setPaintings={setPaintings}
+                enlargedImageVisible={enlargedImageVisible}
+                setEnlargedImageVisible={setEnlargedImageVisible}
+              />
             </Suspense>
           }
         />

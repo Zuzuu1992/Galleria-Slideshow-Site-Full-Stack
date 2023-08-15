@@ -2,13 +2,24 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 
-function Header() {
+interface HeaderProps {
+  slideshowRunning: boolean;
+  setSlideshowRunning: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Header({ slideshowRunning, setSlideshowRunning }: HeaderProps) {
+  const handleClick = () => {
+    setSlideshowRunning(!slideshowRunning);
+  };
   return (
     <Div>
       <Img src={Logo} />
-      <Link to="/slideshow/0">
-        <P>start slideshow</P>
-      </Link>
+      <CustomLink
+        to={slideshowRunning ? "/" : "/slideshow/0"}
+        onClick={handleClick}
+      >
+        <P>{slideshowRunning ? "Stop Slideshow" : "Start Slideshow"}</P>
+      </CustomLink>
     </Div>
   );
 }
@@ -35,4 +46,8 @@ const P = styled.p`
   line-height: normal;
   letter-spacing: 1.929px;
   text-transform: uppercase;
+`;
+
+const CustomLink = styled(Link)`
+  text-decoration: none;
 `;

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Painting } from "../../types";
 import Back from "../../svg/Back";
 import Next from "../../svg/Next";
+import ViewImage from "../../svg/ViewImage";
 
 interface SlideIndicatorProps {
   percent: number;
@@ -14,9 +15,16 @@ interface SlideIndicatorProps {
 interface SlideshowProps {
   paintings: Painting[];
   setPaintings: React.Dispatch<React.SetStateAction<Painting[]>>;
+  enlargedImageVisible: boolean;
+  setEnlargedImageVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
+const Slideshow: React.FC<SlideshowProps> = ({
+  paintings,
+  setPaintings,
+  enlargedImageVisible,
+  setEnlargedImageVisible,
+}) => {
   const { index } = useParams<{ index: string | undefined }>();
   const [currentIndex, setCurrentIndex] = useState<number>(
     parseInt(index || "0")
@@ -24,6 +32,10 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
 
   const handleSlideChange = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  const toggleEnlargedImage = () => {
+    setEnlargedImageVisible(!enlargedImageVisible);
   };
 
   const totalSlides = paintings.length;
@@ -60,6 +72,10 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
                       }
                     />
                     {/* <Text> */}
+                    <Enlarge onClick={toggleEnlargedImage}>
+                      <ViewImage />
+                      <ViewText>View Image</ViewText>
+                    </Enlarge>
                     <WhiteBack>
                       <Title>{painting.name}</Title>
                       <Artist>{painting.artist.name}</Artist>
@@ -80,10 +96,19 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
           </CustomCarousel>
         </CarouselWrapper>
       </Container>
+
       <LineWrapper>
         <Line></Line>
         <SlideIndicator percent={slidePercentage} />
       </LineWrapper>
+      {enlargedImageVisible && (
+        <EnlargedImageOverlay>
+          <Close onClick={toggleEnlargedImage}>close</Close>
+          <EnlargedImage
+            src={`https://galleria-arzk.onrender.com${paintings[currentIndex].images.hero.small}`}
+          />
+        </EnlargedImageOverlay>
+      )}
       <Footer>
         {currentPainting && (
           <FooterText>
@@ -92,8 +117,12 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
           </FooterText>
         )}
         <SlideArrows>
-          <Back />
-          <Next />
+          <Arrow1>
+            <Back />
+          </Arrow1>
+          <Arrow2>
+            <Next />
+          </Arrow2>
         </SlideArrows>
       </Footer>
     </>
@@ -149,8 +178,33 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
 const Image = styled.img`
   width: 100%;
 `;
+
 const ImageSet = styled.div`
   position: relative;
+`;
+
+const Enlarge = styled.div`
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: rgba(0, 0, 0, 0.745);
+  cursor: pointer;
+`;
+
+const ViewText = styled.p`
+  color: #fff;
+  text-align: right;
+  font-family: Libre Baskerville;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 2.143px;
+  text-transform: uppercase;
 `;
 
 // const Text = styled.div`
@@ -251,6 +305,7 @@ const FooterTitle = styled.h2`
   font-weight: 700;
   line-height: normal;
 `;
+
 const FooterArtist = styled.p`
   color: #000;
   font-family: Libre Baskerville;
@@ -264,6 +319,50 @@ const FooterArtist = styled.p`
 const SlideArrows = styled.div`
   display: flex;
   gap: 24px;
+`;
+
+const Arrow1 = styled.div`
+  width: 20px;
+`;
+
+const Arrow2 = styled.div`
+  width: 20px;
+`;
+
+const EnlargedImageOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 33px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 24px;
+`;
+
+const Close = styled.p`
+  color: #fff;
+  text-align: right;
+  font-family: Libre Baskerville;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  align-self: flex-end;
+`;
+
+const EnlargedImage = styled.img`
+  max-width: 100%;
+  max-height: 80%;
+  /* padding: 24px; */
+  /* width: 327px; */
 `;
 
 export default Slideshow;

@@ -7,6 +7,7 @@ export interface Painting {
     hero: {
       small: string;
       large: string;
+      gallery: string;
     };
   };
   artist: {
