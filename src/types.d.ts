@@ -1,6 +1,7 @@
 export interface Painting {
   name: string;
   year: string;
+  source: string;
   description: string;
   images: {
     thumbnail: string;

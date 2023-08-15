@@ -29,6 +29,15 @@ const Slideshow: React.FC<SlideshowProps> = ({
   const [currentIndex, setCurrentIndex] = useState<number>(
     parseInt(index || "0")
   );
+  const [sourceUrl, setSourceUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (paintings[currentIndex]?.source) {
+      setSourceUrl(paintings[currentIndex]?.source);
+    } else {
+      setSourceUrl(null);
+    }
+  }, [currentIndex, paintings]);
 
   useEffect(() => {
     console.log("currentIndex after state update:", currentIndex);
@@ -109,6 +118,11 @@ const Slideshow: React.FC<SlideshowProps> = ({
                   </Intro>
                   <Year> {painting.year}</Year>
                   <Description>{painting.description}</Description>
+                  {sourceUrl && (
+                    <SourceLink href={sourceUrl} target="_blank">
+                      GO TO SOURCE
+                    </SourceLink>
+                  )}
                   {/* </Text> */}
                 </Slide>
               </div>
@@ -298,6 +312,19 @@ const Description = styled.p`
   line-height: 28px;
   text-align: left;
   margin-top: -25px;
+`;
+
+const SourceLink = styled.a`
+  color: #7d7d7d;
+  font-family: Libre Baskerville;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1.929px;
+  text-decoration-line: underline;
+  text-align: left;
+  margin-top: 68px;
 `;
 
 const Footer = styled.footer`
