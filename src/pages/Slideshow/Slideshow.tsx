@@ -4,8 +4,8 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styled from "styled-components";
 import { Painting } from "../../types";
-import BackButton from "../../assets/icon-back-button.svg";
-import NextButton from "../../assets/icon-next-button.svg";
+import Back from "../../svg/Back";
+import Next from "../../svg/Next";
 
 interface SlideIndicatorProps {
   percent: number;
@@ -35,6 +35,7 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
 
   return (
     <>
+      <Line></Line>
       <Container className="1">
         <CarouselWrapper
           style={{ width: "100%", margin: "0 auto" }}
@@ -51,24 +52,28 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
             {paintings.map((painting, idx) => (
               <div key={painting.name} className="4">
                 <Slide className="5">
-                  <Image
-                    src={
-                      "https://galleria-arzk.onrender.com" +
-                      painting.images.hero.small
-                    }
-                  />
-                  <Text>
-                    <Title>{painting.name}</Title>
-                    <Artist>{painting.artist.name}</Artist>
-                    <ArtistImage
+                  <ImageSet>
+                    <Image
                       src={
                         "https://galleria-arzk.onrender.com" +
-                        painting.artist.image
+                        painting.images.hero.small
                       }
                     />
-                    <Year> {painting.year}</Year>
-                    <Description>{painting.description}</Description>
-                  </Text>
+                    {/* <Text> */}
+                    <WhiteBack>
+                      <Title>{painting.name}</Title>
+                      <Artist>{painting.artist.name}</Artist>
+                    </WhiteBack>
+                  </ImageSet>
+                  <ArtistImage
+                    src={
+                      "https://galleria-arzk.onrender.com" +
+                      painting.artist.image
+                    }
+                  />
+                  <Year> {painting.year}</Year>
+                  <Description>{painting.description}</Description>
+                  {/* </Text> */}
                 </Slide>
               </div>
             ))}
@@ -87,8 +92,8 @@ const Slideshow: React.FC<SlideshowProps> = ({ paintings, setPaintings }) => {
           </FooterText>
         )}
         <SlideArrows>
-          <img src={BackButton} />
-          <img src={NextButton} />
+          <Back />
+          <Next />
         </SlideArrows>
       </Footer>
     </>
@@ -112,8 +117,8 @@ const CustomCarousel = styled(Carousel)`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   /* min-height: 100vh; */
   /* background-color: black; */
   padding: 24px;
@@ -123,8 +128,8 @@ const Container = styled.div`
 const Slide = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   height: auto;
   position: relative;
   width: 100%;
@@ -144,9 +149,25 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
 const Image = styled.img`
   width: 100%;
 `;
+const ImageSet = styled.div`
+  position: relative;
+`;
 
-const Text = styled.div`
-  color: white;
+// const Text = styled.div`
+//   color: white;
+// `;
+const WhiteBack = styled.div`
+  background-color: white;
+  position: absolute;
+  bottom: -18%;
+  left: 0px;
+  padding: 24px;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
 `;
 
 const Title = styled.h2`
@@ -170,6 +191,8 @@ const Artist = styled.p`
 const ArtistImage = styled.img`
   width: 64px !important;
   height: 64px !important;
+  margin-top: 50px;
+  margin-left: 16px;
 `;
 
 const Year = styled.h1`
@@ -180,6 +203,7 @@ const Year = styled.h1`
   font-style: normal;
   font-weight: 700;
   line-height: 100px;
+  margin-top: -20px;
 `;
 
 const Description = styled.p`
@@ -189,6 +213,8 @@ const Description = styled.p`
   font-style: normal;
   font-weight: 700;
   line-height: 28px;
+  text-align: left;
+  margin-top: -25px;
 `;
 
 const Footer = styled.footer`
