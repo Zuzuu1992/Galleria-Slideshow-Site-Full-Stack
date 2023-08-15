@@ -1,15 +1,24 @@
 import styled from "styled-components";
 
-const Back = () => {
+interface ArrowProps {
+  onClick: () => void;
+  fill: string;
+}
+
+const Back: React.FC<ArrowProps> = ({ onClick, fill }) => {
   return (
-    <Svg>
-      <g stroke="#000" fill="none" fillRule="evenodd">
-        <path
-          d="M24.166 1.843L3.627 12.113l20.539 10.269V1.843z"
-          strokeWidth="2"
-        />
-        <path fill="#D8D8D8" d="M.986.5h-1v22.775h1z" />
-      </g>
+    <Svg
+      fill={fill}
+      onClick={onClick}
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M18.4,21.8 L6.4,12.8 C5.86666667,12.4 5.86666667,11.6 6.4,11.2 L18.4,2.2 C19.0592363,1.70557281 20,2.17595468 20,3 L20,21 C20,21.8240453 19.0592363,22.2944272 18.4,21.8 Z M18,5 L8.66666667,12 L18,19 L18,5 Z M6,22 L4,22 L4,2 L6,2 L6,22 Z"
+        fillRule="evenodd"
+      />
     </Svg>
   );
 };
@@ -21,7 +30,11 @@ const attrs = styled.svg.attrs({
 })``;
 
 const Svg = styled(attrs)`
-  width: 26px;
-  height: 24px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  /* fill: #d8d8d8; */
+  /* width: 100%;
+  height: 100%; */
   cursor: pointer;
 `;

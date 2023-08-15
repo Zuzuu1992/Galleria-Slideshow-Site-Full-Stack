@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -30,6 +30,10 @@ const Slideshow: React.FC<SlideshowProps> = ({
     parseInt(index || "0")
   );
 
+  useEffect(() => {
+    console.log("currentIndex after state update:", currentIndex);
+  }, [currentIndex]);
+
   const handleSlideChange = (index: number) => {
     setCurrentIndex(index);
   };
@@ -38,12 +42,26 @@ const Slideshow: React.FC<SlideshowProps> = ({
     setEnlargedImageVisible(!enlargedImageVisible);
   };
 
+  console.log(currentIndex);
+
   const totalSlides = paintings.length;
   const currentSlide = currentIndex + 1; // Adding 1 because indices are 0-based
 
   const slidePercentage = (currentSlide / totalSlides) * 100;
 
   const currentPainting = paintings[currentIndex];
+
+  const handleBackClick = () => {
+    console.log(currentIndex);
+    const newIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    setCurrentIndex(newIndex);
+  };
+
+  const handleNextClick = () => {
+    console.log(currentIndex);
+    const newIndex = (currentIndex + 1) % totalSlides;
+    setCurrentIndex(newIndex);
+  };
 
   return (
     <>
@@ -117,12 +135,14 @@ const Slideshow: React.FC<SlideshowProps> = ({
           </FooterText>
         )}
         <SlideArrows>
-          <Arrow1>
-            <Back />
-          </Arrow1>
-          <Arrow2>
-            <Next />
-          </Arrow2>
+          <Back
+            onClick={handleBackClick}
+            fill={currentIndex === 0 ? "#d8d8d8" : "#000000"}
+          />
+          <Next
+            onClick={handleNextClick}
+            fill={currentIndex === totalSlides - 1 ? "#d8d8d8" : "#000000"}
+          />
         </SlideArrows>
       </Footer>
     </>
@@ -319,14 +339,6 @@ const FooterArtist = styled.p`
 const SlideArrows = styled.div`
   display: flex;
   gap: 24px;
-`;
-
-const Arrow1 = styled.div`
-  width: 20px;
-`;
-
-const Arrow2 = styled.div`
-  width: 20px;
 `;
 
 const EnlargedImageOverlay = styled.div`
