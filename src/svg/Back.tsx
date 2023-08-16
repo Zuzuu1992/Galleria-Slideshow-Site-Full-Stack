@@ -33,8 +33,5 @@ const Svg = styled(attrs)`
   display: block;
   width: 16px;
   height: 16px;
-  /* fill: #d8d8d8; */
-  /* width: 100%;
-  height: 100%; */
   cursor: pointer;
 `;

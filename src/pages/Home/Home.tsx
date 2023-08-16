@@ -3,22 +3,18 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { Painting } from "../../types";
 
-// import Header from "../../components/Header";
-
 interface HomeProps {
   paintings: Painting[];
   setPaintings: React.Dispatch<React.SetStateAction<Painting[]>>;
 }
 
 const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
-  // const [paintings, setPaintings] = useState<Painting[]>([]);
+  const apiUrl = import.meta.env.VITE_REACT_APP_BASE_API_URL;
 
   useEffect(() => {
     async function getPaintings() {
       try {
-        const response = await axios.get(
-          "https://galleria-arzk.onrender.com/api/paintings"
-        );
+        const response = await axios.get(apiUrl + "/api/paintings");
         const data = response.data;
         setPaintings(data);
       } catch (error) {
@@ -31,17 +27,13 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
 
   return (
     <>
-      {/* <Header></Header> */}
       <Line></Line>
       <Gallery className="paintings-container">
         {paintings.map((painting) => (
           <PaintingSection key={painting.name} className="painting">
             <ImageWrapper>
               <Image
-                src={
-                  "https://galleria-arzk.onrender.com" +
-                  painting.images.thumbnail
-                }
+                src={apiUrl + painting.images.thumbnail}
                 alt={painting.name}
               />
               <Overlay></Overlay>
@@ -80,11 +72,10 @@ const PaintingSection = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  overflow: hidden; /* Hide any overflowing content */
+  overflow: hidden;
 `;
 
 const Image = styled.img`
-  /* position: relative; */
   width: 100%;
 `;
 

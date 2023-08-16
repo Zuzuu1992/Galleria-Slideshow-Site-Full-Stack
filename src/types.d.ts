@@ -8,8 +8,8 @@ export interface Painting {
     hero: {
       small: string;
       large: string;
-      gallery: string;
     };
+    gallery: string;
   };
   artist: {
     image: string;

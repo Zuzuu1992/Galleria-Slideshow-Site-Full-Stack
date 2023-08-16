@@ -31,6 +31,8 @@ const Slideshow: React.FC<SlideshowProps> = ({
   );
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
 
+  const apiUrl = import.meta.env.VITE_REACT_APP_BASE_API_URL;
+
   useEffect(() => {
     if (paintings[currentIndex]?.source) {
       setSourceUrl(paintings[currentIndex]?.source);
@@ -39,9 +41,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
     }
   }, [currentIndex, paintings]);
 
-  useEffect(() => {
-    console.log("currentIndex after state update:", currentIndex);
-  }, [currentIndex]);
+  useEffect(() => {}, [currentIndex]);
 
   const handleSlideChange = (index: number) => {
     setCurrentIndex(index);
@@ -51,23 +51,19 @@ const Slideshow: React.FC<SlideshowProps> = ({
     setEnlargedImageVisible(!enlargedImageVisible);
   };
 
-  console.log(currentIndex);
-
   const totalSlides = paintings.length;
-  const currentSlide = currentIndex + 1; // Adding 1 because indices are 0-based
+  const currentSlide = currentIndex + 1;
 
   const slidePercentage = (currentSlide / totalSlides) * 100;
 
   const currentPainting = paintings[currentIndex];
 
   const handleBackClick = () => {
-    console.log(currentIndex);
     const newIndex = (currentIndex - 1 + totalSlides) % totalSlides;
     setCurrentIndex(newIndex);
   };
 
   const handleNextClick = () => {
-    console.log(currentIndex);
     const newIndex = (currentIndex + 1) % totalSlides;
     setCurrentIndex(newIndex);
   };
@@ -93,13 +89,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
                 <Slide className="5">
                   <Intro>
                     <ImageSet>
-                      <Image
-                        src={
-                          "https://galleria-arzk.onrender.com" +
-                          painting.images.hero.small
-                        }
-                      />
-                      {/* <Text> */}
+                      <Image src={apiUrl + painting.images.hero.small} />
                       <Enlarge onClick={toggleEnlargedImage}>
                         <ViewImage />
                         <ViewText>View Image</ViewText>
@@ -109,12 +99,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
                         <Artist>{painting.artist.name}</Artist>
                       </WhiteBack>
                     </ImageSet>
-                    <ArtistImage
-                      src={
-                        "https://galleria-arzk.onrender.com" +
-                        painting.artist.image
-                      }
-                    />
+                    <ArtistImage src={apiUrl + painting.artist.image} />
                   </Intro>
                   <TextSection>
                     <Year> {painting.year}</Year>
@@ -125,7 +110,6 @@ const Slideshow: React.FC<SlideshowProps> = ({
                       </SourceLink>
                     )}
                   </TextSection>
-                  {/* </Text> */}
                 </Slide>
               </div>
             ))}
@@ -141,7 +125,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
         <EnlargedImageOverlay>
           <Close onClick={toggleEnlargedImage}>close</Close>
           <EnlargedImage
-            src={`https://galleria-arzk.onrender.com${paintings[currentIndex].images.gallery}`}
+            src={`apiUrl${paintings[currentIndex].images.gallery}`}
           />
         </EnlargedImageOverlay>
       )}
@@ -184,10 +168,6 @@ const CustomCarousel = styled(Carousel)`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center;
-  justify-content: center; */
-  /* min-height: 100vh; */
-  /* background-color: black; */
   padding: 24px;
   width: 100%;
 `;
@@ -195,12 +175,8 @@ const Container = styled.div`
 const Slide = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center;
-  justify-content: center; */
   height: auto;
-  /* position: relative; */
   width: 100%;
-  /* background-color: red; */
 `;
 
 const SlideIndicator = styled.div<SlideIndicatorProps>`
@@ -251,14 +227,9 @@ const ViewText = styled.p`
   text-transform: uppercase;
 `;
 
-// const Text = styled.div`
-//   color: white;
-// `;
 const WhiteBack = styled.div`
   background-color: white;
   position: absolute;
-  /* bottom: -18%;
-  left: 0px; */
   padding: 24px;
   width: 85%;
   display: flex;
@@ -352,7 +323,6 @@ const Line = styled.div`
   background-color: #e5e5e5;
   height: 1px;
   width: 100%;
-  /* position: relative; */
 `;
 
 const FooterText = styled.div`
@@ -417,8 +387,6 @@ const Close = styled.p`
 const EnlargedImage = styled.img`
   max-width: 100%;
   max-height: 80%;
-  /* padding: 24px; */
-  /* width: 327px; */
 `;
 
 export default Slideshow;
