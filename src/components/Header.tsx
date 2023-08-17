@@ -36,6 +36,7 @@ const Div = styled.div`
 const Img = styled.img`
   height: 32px;
 `;
+
 const P = styled.p`
   color: #7d7d7d;
   text-align: right;
@@ -46,6 +47,11 @@ const P = styled.p`
   line-height: normal;
   letter-spacing: 1.929px;
   text-transform: uppercase;
+
+  @media (min-width: 768px) {
+    font-size: 12px;
+    letter-spacing: 2.571px;
+  }
 `;
 
 const CustomLink = styled(Link)`
