@@ -69,7 +69,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
   };
 
   return (
-    <>
+    <Wrapper>
       <Line></Line>
       <Container className="1">
         <CarouselWrapper
@@ -89,16 +89,25 @@ const Slideshow: React.FC<SlideshowProps> = ({
                 <Slide className="5">
                   <Intro>
                     <ImageSet>
-                      <Image src={apiUrl + painting.images.hero.small} />
+                      <picture>
+                        <source
+                          srcSet={apiUrl + painting.images.hero.large}
+                          media="(min-width: 768px)"
+                        />
+                        <Image
+                          src={apiUrl + painting.images.hero.small}
+                          alt={painting.name}
+                        />
+                      </picture>
                       <Enlarge onClick={toggleEnlargedImage}>
                         <ViewImage />
                         <ViewText>View Image</ViewText>
                       </Enlarge>
-                      <WhiteBack>
-                        <Title>{painting.name}</Title>
-                        <Artist>{painting.artist.name}</Artist>
-                      </WhiteBack>
                     </ImageSet>
+                    <WhiteBack>
+                      <Title>{painting.name}</Title>
+                      <Artist>{painting.artist.name}</Artist>
+                    </WhiteBack>
                     <ArtistImage src={apiUrl + painting.artist.image} />
                   </Intro>
                   <TextSection>
@@ -147,7 +156,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
           />
         </SlideArrows>
       </Footer>
-    </>
+    </Wrapper>
   );
 };
 
@@ -170,6 +179,10 @@ const Container = styled.div`
   flex-direction: column;
   padding: 24px;
   width: 100%;
+  @media (min-width: 768px) {
+    padding: 40px;
+    /* padding-right: 42px; */
+  }
 `;
 
 const Slide = styled.div`
@@ -177,6 +190,13 @@ const Slide = styled.div`
   flex-direction: column;
   height: auto;
   width: 100%;
+  @media (min-width: 768px) {
+  }
+  @media (min-width: 1440px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
+  }
 `;
 
 const SlideIndicator = styled.div<SlideIndicatorProps>`
@@ -191,16 +211,40 @@ const SlideIndicator = styled.div<SlideIndicatorProps>`
 
 const Image = styled.img`
   width: 100%;
+  @media (min-width: 768px) {
+    height: 560px;
+  }
 `;
 
 const Intro = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 50px; */
+
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: auto repeat(2, minmax(3.5rem, 4.2rem)) auto;
+  /* @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    
+  } */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 17.6rem auto;
+  }
 `;
 
 const ImageSet = styled.div`
+  /* position: relative; */
+  grid-row: 1/3;
+  grid-column: 1/2;
   position: relative;
+  display: flex;
+  @media (min-width: 768px) {
+    grid-column: 1/3;
+    grid-row: 1/3;
+  }
 `;
 
 const Enlarge = styled.div`
@@ -228,7 +272,7 @@ const ViewText = styled.p`
 `;
 
 const WhiteBack = styled.div`
-  background-color: white;
+  /* background-color: white;
   position: absolute;
   padding: 24px;
   width: 85%;
@@ -237,7 +281,24 @@ const WhiteBack = styled.div`
   align-items: flex-start;
   gap: 8px;
   text-align: left;
-  transform: translate(0%, -52%);
+  transform: translate(0%, -52%); */
+
+  position: relative;
+  background-color: var(--white);
+  grid-row: 2/4;
+  grid-column: 1/2;
+  max-width: 90%;
+  padding: 24px;
+  text-align: left;
+  @media (min-width: 768px) {
+    grid-column: 2/4;
+    grid-row: 1/2;
+    padding: initial;
+    padding-left: 65px;
+    padding-bottom: 65px;
+    max-width: none;
+    width: 95%;
+  }
 `;
 
 const Title = styled.h2`
@@ -247,6 +308,12 @@ const Title = styled.h2`
   font-style: normal;
   font-weight: 700;
   line-height: 29px;
+  margin-bottom: 8px;
+  @media (min-width: 768px) {
+    font-size: 56px;
+    line-height: 64px;
+    margin-bottom: 24px;
+  }
 `;
 
 const Artist = styled.p`
@@ -263,12 +330,23 @@ const ArtistImage = styled.img`
   height: 64px !important;
 
   margin-left: 16px;
+  @media (min-width: 768px) {
+    width: 128px !important;
+    height: 128px !important;
+    margin-left: 46px;
+    grid-column: 3/4;
+    justify-self: start;
+  }
 `;
 
 const TextSection = styled.section`
   display: flex;
   flex-direction: column;
   padding-bottom: 24px;
+  @media (min-width: 768px) {
+    margin-top: 60px;
+    align-items: flex-start;
+  }
 `;
 
 const Year = styled.h1`
@@ -280,6 +358,11 @@ const Year = styled.h1`
   font-weight: 700;
   line-height: 100px;
   margin-top: -20px;
+  @media (min-width: 768px) {
+    font-size: 200px;
+    line-height: 150px;
+    margin-top: 0px;
+  }
 `;
 
 const Description = styled.p`
@@ -291,6 +374,11 @@ const Description = styled.p`
   line-height: 28px;
   text-align: left;
   margin-top: -25px;
+  @media (min-width: 768px) {
+    width: 84%;
+    padding-left: 115px;
+    margin-top: -75px;
+  }
 `;
 
 const SourceLink = styled.a`
@@ -304,15 +392,21 @@ const SourceLink = styled.a`
   text-decoration-line: underline;
   text-align: left;
   margin-top: 68px;
+  @media (min-width: 768px) {
+    padding-left: 115px;
+  }
 `;
 
 const Footer = styled.footer`
   width: 100%;
   height: 10%;
-  padding: 17px 24px;
+  padding: 48px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (min-width: 768px) {
+    padding: 56px 40px;
+  }
 `;
 
 const LineWrapper = styled.div`
@@ -338,6 +432,9 @@ const FooterTitle = styled.h2`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const FooterArtist = styled.p`
@@ -348,6 +445,9 @@ const FooterArtist = styled.p`
   font-weight: 400;
   line-height: normal;
   opacity: 0.7528279423713684;
+  @media (min-width: 768px) {
+    font-size: 13px;
+  }
 `;
 
 const SlideArrows = styled.div`
@@ -387,6 +487,10 @@ const Close = styled.p`
 const EnlargedImage = styled.img`
   max-width: 100%;
   max-height: 80%;
+`;
+
+const Wrapper = styled.div`
+  height: 100%;
 `;
 
 export default Slideshow;

@@ -34,4 +34,8 @@ const Svg = styled(attrs)`
   width: 16px;
   height: 16px;
   cursor: pointer;
+  @media (min-width: 768px) {
+    width: 24px;
+    height: 24px;
+  }
 `;
