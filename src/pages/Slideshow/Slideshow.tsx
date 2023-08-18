@@ -108,6 +108,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
                       <Title>{painting.name}</Title>
                       <Artist>{painting.artist.name}</Artist>
                     </WhiteBack>
+
                     <ArtistImage src={apiUrl + painting.artist.image} />
                   </Intro>
                   <TextSection>
@@ -134,7 +135,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
         <EnlargedImageOverlay>
           <Close onClick={toggleEnlargedImage}>close</Close>
           <EnlargedImage
-            src={`apiUrl${paintings[currentIndex].images.gallery}`}
+            src={`${apiUrl}${paintings[currentIndex].images.gallery}`}
           />
         </EnlargedImageOverlay>
       )}
@@ -160,6 +161,24 @@ const Slideshow: React.FC<SlideshowProps> = ({
   );
 };
 
+const Wrapper = styled.div`
+  height: 100%;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  width: 100%;
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
+  @media (min-width: 1440px) {
+    padding-top: 100px;
+    padding-bottom: 75px;
+  }
+`;
+
 const CarouselWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
@@ -172,16 +191,8 @@ const CustomCarousel = styled(Carousel)`
   && .carousel .control-arrow {
     display: none;
   }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  width: 100%;
-  @media (min-width: 768px) {
-    padding: 40px;
-    /* padding-right: 42px; */
+  && .carousel .slide img {
+    height: auto;
   }
 `;
 
@@ -217,26 +228,21 @@ const Image = styled.img`
 `;
 
 const Intro = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  gap: 50px; */
-
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-template-rows: auto repeat(2, minmax(3.5rem, 4.2rem)) auto;
-  /* @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-    
-  } */
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 17.6rem auto;
   }
+  @media (min-width: 1440px) {
+    grid-template-columns: 60% 10% 60%;
+    grid-template-rows: none;
+  }
 `;
 
 const ImageSet = styled.div`
-  /* position: relative; */
+  position: relative;
   grid-row: 1/3;
   grid-column: 1/2;
   position: relative;
@@ -244,6 +250,10 @@ const ImageSet = styled.div`
   @media (min-width: 768px) {
     grid-column: 1/3;
     grid-row: 1/3;
+  }
+  @media (min-width: 1440px) {
+    grid-column: 1/3;
+    grid-row: 1/2;
   }
 `;
 
@@ -257,6 +267,10 @@ const Enlarge = styled.div`
   left: 16px;
   background-color: rgba(0, 0, 0, 0.745);
   cursor: pointer;
+  @media (min-width: 768px) {
+    top: auto;
+    bottom: 16px;
+  }
 `;
 
 const ViewText = styled.p`
@@ -272,17 +286,6 @@ const ViewText = styled.p`
 `;
 
 const WhiteBack = styled.div`
-  /* background-color: white;
-  position: absolute;
-  padding: 24px;
-  width: 85%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  text-align: left;
-  transform: translate(0%, -52%); */
-
   position: relative;
   background-color: var(--white);
   grid-row: 2/4;
@@ -298,6 +301,10 @@ const WhiteBack = styled.div`
     padding-bottom: 65px;
     max-width: none;
     width: 95%;
+    margin-top: -1px;
+  }
+  @media (min-width: 1440px) {
+    height: fit-content;
   }
 `;
 
@@ -326,9 +333,10 @@ const Artist = styled.p`
 `;
 
 const ArtistImage = styled.img`
+  position: relative;
   width: 64px !important;
   height: 64px !important;
-
+  position: relative;
   margin-left: 16px;
   @media (min-width: 768px) {
     width: 128px !important;
@@ -336,6 +344,14 @@ const ArtistImage = styled.img`
     margin-left: 46px;
     grid-column: 3/4;
     justify-self: start;
+  }
+  @media (min-width: 1440px) {
+    /* grid-row: 1/2; */
+    align-self: end;
+    justify-self: auto;
+    /* transform: translate(0%, 40%); */
+    z-index: 1001;
+    margin-top: -80px !important;
   }
 `;
 
@@ -346,6 +362,9 @@ const TextSection = styled.section`
   @media (min-width: 768px) {
     margin-top: 60px;
     align-items: flex-start;
+  }
+  @media (min-width: 1440px) {
+    margin-top: 0px;
   }
 `;
 
@@ -363,6 +382,10 @@ const Year = styled.h1`
     line-height: 150px;
     margin-top: 0px;
   }
+  @media (min-width: 1440px) {
+    align-self: flex-end;
+    line-height: 180px;
+  }
 `;
 
 const Description = styled.p`
@@ -379,6 +402,10 @@ const Description = styled.p`
     padding-left: 115px;
     margin-top: -75px;
   }
+  @media (min-width: 1440px) {
+    padding-left: 180px;
+    margin-top: -50px;
+  }
 `;
 
 const SourceLink = styled.a`
@@ -394,6 +421,9 @@ const SourceLink = styled.a`
   margin-top: 68px;
   @media (min-width: 768px) {
     padding-left: 115px;
+  }
+  @media (min-width: 1440px) {
+    padding-left: 180px;
   }
 `;
 
@@ -469,6 +499,9 @@ const EnlargedImageOverlay = styled.div`
   align-items: center;
   z-index: 1000;
   padding: 24px;
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
 `;
 
 const Close = styled.p`
@@ -487,10 +520,9 @@ const Close = styled.p`
 const EnlargedImage = styled.img`
   max-width: 100%;
   max-height: 80%;
-`;
-
-const Wrapper = styled.div`
-  height: 100%;
+  @media (min-width: 768px) {
+    max-height: 100%;
+  }
 `;
 
 export default Slideshow;
