@@ -32,6 +32,7 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
       try {
         const response = await axios.get(apiUrl + "/api/paintings");
         const data = response.data;
+        data.sort((a, b) => a._id.localeCompare(b._id));
         setPaintings(data);
       } catch (error) {
         console.error("Error fetching paintings:", error);
@@ -102,7 +103,7 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
 
       {!shouldRenderGallery && (
         <Gallery className="paintings-container">
-          <Piece1>
+          {/* <Piece1>
             {Array.isArray(chunk1) &&
               chunk1.map((painting) => (
                 <PaintingSection key={painting.name} className="painting">
@@ -121,8 +122,8 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
               ))}
           </Piece1>
           <Piece2>
-            {Array.isArray(chunk2) &&
-              chunk2.map((painting) => (
+            {Array.isArray(chunk3) &&
+              chunk3.map((painting) => (
                 <PaintingSection key={painting.name} className="painting">
                   <ImageWrapper>
                     <Image
@@ -139,8 +140,8 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
               ))}
           </Piece2>
           <Piece3>
-            {Array.isArray(chunk3) &&
-              chunk3.map((painting) => (
+            {Array.isArray(chunk2) &&
+              chunk2.map((painting) => (
                 <PaintingSection key={painting.name} className="painting">
                   <ImageWrapper>
                     <Image
@@ -173,7 +174,22 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
                   </Text>
                 </PaintingSection>
               ))}
-          </Piece4>
+          </Piece4> */}
+          {paintings.map((painting) => (
+            <PaintingSection key={painting.name} className="painting">
+              <ImageWrapper>
+                <Image
+                  src={apiUrl + painting.images.thumbnail}
+                  alt={painting.name}
+                />
+                <Overlay></Overlay>
+              </ImageWrapper>
+              <Text>
+                <Masterpiece>{painting.name}</Masterpiece>
+                <Artist>{painting.artist.name}</Artist>
+              </Text>
+            </PaintingSection>
+          ))}
         </Gallery>
       )}
     </>
@@ -201,8 +217,12 @@ const Gallery = styled.div`
     align-items: start;
   }
   @media (min-width: 1440px) {
-    grid-template-columns: repeat(4, 1fr);
-    align-items: start;
+    /* grid-template-columns: repeat(4, 1fr);
+    align-items: start; */
+    /* grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: auto; */
+    column-count: 4;
+    display: inline-block;
   }
 `;
 
@@ -214,6 +234,9 @@ const PaintingSection = styled.div`
   height: fit-content;
   cursor: pointer;
   transition: all 0.3s ease-in;
+  @media (min-width: 1440px) {
+    margin-bottom: 40px;
+  }
 `;
 
 const ImageWrapper = styled.div`
@@ -223,6 +246,10 @@ const ImageWrapper = styled.div`
   display: grid;
 
   @media (min-width: 768px) {
+  }
+  @media (min-width: 1440px) {
+    display: unset;
+    overflow: visible;
   }
 `;
 
@@ -249,7 +276,8 @@ const Overlay = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.463);
 
-  @media (min-width: 768px) {
+  @media (min-width: 1440px) {
+    height: 99%;
   }
 `;
 
@@ -304,6 +332,12 @@ const Piece1 = styled.div`
   @media (min-width: 768px) {
     row-gap: 40px;
   }
+  @media (min-width: 1440px) {
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: none; */
+    column-gap: 24px;
+  }
 `;
 const Piece2 = styled.div`
   display: grid;
@@ -313,22 +347,40 @@ const Piece2 = styled.div`
   @media (min-width: 768px) {
     row-gap: 40px;
   }
-`;
-const Piece3 = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-rows: auto 1fr;
-  row-gap: 24px;
-  @media (min-width: 768px) {
-    row-gap: 40px;
+  @media (min-width: 1440px) {
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: none; */
+    column-gap: 24px;
   }
 `;
-const Piece4 = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-rows: auto 1fr;
-  row-gap: 24px;
-  @media (min-width: 768px) {
-    row-gap: 40px;
+// const Piece3 = styled.div`
+//   display: grid;
+//   width: 100%;
+//   grid-template-rows: auto 1fr;
+//   row-gap: 24px;
+//   @media (min-width: 768px) {
+//     row-gap: 40px;
+//   }
+/* @media (min-width: 1440px) {
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr); */
+/* grid-template-columns: none; */
+/* column-gap: 24px;
   }
-`;
+`; */
+// const Piece4 = styled.div`
+//   display: grid;
+//   width: 100%;
+//   grid-template-rows: auto 1fr;
+//   row-gap: 24px;
+//   @media (min-width: 768px) {
+//     row-gap: 40px;
+//   }
+//   @media (min-width: 1440px) {
+//     width: 100%;
+//     grid-template-columns: repeat(4, 1fr);
+/* grid-template-columns: none; */
+/* column-gap: 24px;
+  }
+`; */

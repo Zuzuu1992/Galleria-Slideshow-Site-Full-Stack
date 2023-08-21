@@ -58,14 +58,28 @@ const Slideshow: React.FC<SlideshowProps> = ({
 
   const currentPainting = paintings[currentIndex];
 
+  // const handleBackClick = () => {
+  //   const newIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+  //   setCurrentIndex(newIndex);
+  // };
+
+  // const handleNextClick = () => {
+  //   const newIndex = (currentIndex + 1) % totalSlides;
+  //   setCurrentIndex(newIndex);
+  // };
+
   const handleBackClick = () => {
-    const newIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-    setCurrentIndex(newIndex);
+    if (currentIndex > 0) {
+      const newIndex = currentIndex - 1;
+      setCurrentIndex(newIndex);
+    }
   };
 
   const handleNextClick = () => {
-    const newIndex = (currentIndex + 1) % totalSlides;
-    setCurrentIndex(newIndex);
+    if (currentIndex < totalSlides - 1) {
+      const newIndex = currentIndex + 1;
+      setCurrentIndex(newIndex);
+    }
   };
 
   return (
@@ -515,6 +529,7 @@ const Close = styled.p`
   letter-spacing: 3px;
   text-transform: uppercase;
   align-self: flex-end;
+  cursor: pointer;
 `;
 
 const EnlargedImage = styled.img`
