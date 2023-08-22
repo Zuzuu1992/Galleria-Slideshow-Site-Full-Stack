@@ -47,6 +47,10 @@ const P = styled.p`
   line-height: normal;
   letter-spacing: 1.929px;
   text-transform: uppercase;
+  transition: color 0.3s;
+  &:hover {
+    color: #000;
+  }
 
   @media (min-width: 768px) {
     font-size: 12px;

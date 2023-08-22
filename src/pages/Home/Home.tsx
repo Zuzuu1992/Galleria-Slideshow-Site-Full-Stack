@@ -1,38 +1,45 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Painting } from "../../types";
+import { Link } from "react-router-dom";
 
 interface HomeProps {
   paintings: Painting[];
   setPaintings: React.Dispatch<React.SetStateAction<Painting[]>>;
+  slideshowRunning: boolean;
+  setSlideshowRunning: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
+const Home: React.FC<HomeProps> = ({
+  paintings,
+  setPaintings,
+  setSlideshowRunning,
+}) => {
   const apiUrl = import.meta.env.VITE_REACT_APP_BASE_API_URL;
 
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  // const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setScreenWidth(window.innerWidth);
+  //   };
 
-    window.addEventListener("resize", handleResize);
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
-  const shouldRenderGallery = screenWidth < 1440;
+  // const shouldRenderGallery = screenWidth < 1440;
 
   useEffect(() => {
     async function getPaintings() {
       try {
         const response = await axios.get(apiUrl + "/api/paintings");
         const data = response.data;
-        data.sort((a, b) => a._id.localeCompare(b._id));
+        data.sort((a: Painting, b: Painting) => a._id.localeCompare(b._id));
         setPaintings(data);
       } catch (error) {
         console.error("Error fetching paintings:", error);
@@ -43,139 +50,28 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
   }, []);
 
   // Function to split paintings into groups of specified size
-  const chunkedPaintings = (arr: Painting[], chunkSize: number) => {
-    const chunked = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      chunked.push(arr.slice(i, i + chunkSize));
-    }
-    return chunked;
-  };
+  // const chunkedPaintings = (arr: Painting[], chunkSize: number) => {
+  //   const chunked = [];
+  //   for (let i = 0; i < arr.length; i += chunkSize) {
+  //     chunked.push(arr.slice(i, i + chunkSize));
+  //   }
+  //   return chunked;
+  // };
 
-  const paintingsChunks = chunkedPaintings(paintings, 7);
-  const [firstChunk, secondChunk] = paintingsChunks;
-
-  const largeScreenChunks = chunkedPaintings(paintings, 4);
-  const [chunk1, chunk2, chunk3, chunk4] = largeScreenChunks;
+  // const paintingsChunks = chunkedPaintings(paintings, 7);
+  // const [firstChunk, secondChunk] = paintingsChunks;
 
   return (
     <>
       <Line></Line>
-      {shouldRenderGallery && (
-        <Gallery className="paintings-container">
-          <Piece1>
-            {Array.isArray(firstChunk) &&
-              firstChunk.map((painting) => (
-                <PaintingSection key={painting.name} className="painting">
-                  <ImageWrapper>
-                    <Image
-                      src={apiUrl + painting.images.thumbnail}
-                      alt={painting.name}
-                    />
-                    <Overlay></Overlay>
-                  </ImageWrapper>
-                  <Text>
-                    <Masterpiece>{painting.name}</Masterpiece>
-                    <Artist>{painting.artist.name}</Artist>
-                  </Text>
-                </PaintingSection>
-              ))}
-          </Piece1>
-          <Piece2>
-            {Array.isArray(secondChunk) &&
-              secondChunk.map((painting) => (
-                <PaintingSection key={painting.name} className="painting">
-                  <ImageWrapper>
-                    <Image
-                      src={apiUrl + painting.images.thumbnail}
-                      alt={painting.name}
-                    />
-                    <Overlay></Overlay>
-                  </ImageWrapper>
-                  <Text>
-                    <Masterpiece>{painting.name}</Masterpiece>
-                    <Artist>{painting.artist.name}</Artist>
-                  </Text>
-                </PaintingSection>
-              ))}
-          </Piece2>
-        </Gallery>
-      )}
 
-      {!shouldRenderGallery && (
-        <Gallery className="paintings-container">
-          {/* <Piece1>
-            {Array.isArray(chunk1) &&
-              chunk1.map((painting) => (
-                <PaintingSection key={painting.name} className="painting">
-                  <ImageWrapper>
-                    <Image
-                      src={apiUrl + painting.images.thumbnail}
-                      alt={painting.name}
-                    />
-                    <Overlay></Overlay>
-                  </ImageWrapper>
-                  <Text>
-                    <Masterpiece>{painting.name}</Masterpiece>
-                    <Artist>{painting.artist.name}</Artist>
-                  </Text>
-                </PaintingSection>
-              ))}
-          </Piece1>
-          <Piece2>
-            {Array.isArray(chunk3) &&
-              chunk3.map((painting) => (
-                <PaintingSection key={painting.name} className="painting">
-                  <ImageWrapper>
-                    <Image
-                      src={apiUrl + painting.images.thumbnail}
-                      alt={painting.name}
-                    />
-                    <Overlay></Overlay>
-                  </ImageWrapper>
-                  <Text>
-                    <Masterpiece>{painting.name}</Masterpiece>
-                    <Artist>{painting.artist.name}</Artist>
-                  </Text>
-                </PaintingSection>
-              ))}
-          </Piece2>
-          <Piece3>
-            {Array.isArray(chunk2) &&
-              chunk2.map((painting) => (
-                <PaintingSection key={painting.name} className="painting">
-                  <ImageWrapper>
-                    <Image
-                      src={apiUrl + painting.images.thumbnail}
-                      alt={painting.name}
-                    />
-                    <Overlay></Overlay>
-                  </ImageWrapper>
-                  <Text>
-                    <Masterpiece>{painting.name}</Masterpiece>
-                    <Artist>{painting.artist.name}</Artist>
-                  </Text>
-                </PaintingSection>
-              ))}
-          </Piece3>
-          <Piece4>
-            {Array.isArray(chunk4) &&
-              chunk4.map((painting) => (
-                <PaintingSection key={painting.name} className="painting">
-                  <ImageWrapper>
-                    <Image
-                      src={apiUrl + painting.images.thumbnail}
-                      alt={painting.name}
-                    />
-                    <Overlay></Overlay>
-                  </ImageWrapper>
-                  <Text>
-                    <Masterpiece>{painting.name}</Masterpiece>
-                    <Artist>{painting.artist.name}</Artist>
-                  </Text>
-                </PaintingSection>
-              ))}
-          </Piece4> */}
-          {paintings.map((painting) => (
+      <Gallery className="paintings-container">
+        {paintings.map((painting, index) => (
+          <CustomLink
+            key={painting.name}
+            to={`/slideshow/${index}`}
+            onClick={() => setSlideshowRunning(true)}
+          >
             <PaintingSection key={painting.name} className="painting">
               <ImageWrapper>
                 <Image
@@ -189,9 +85,9 @@ const Home: React.FC<HomeProps> = ({ paintings, setPaintings }) => {
                 <Artist>{painting.artist.name}</Artist>
               </Text>
             </PaintingSection>
-          ))}
-        </Gallery>
-      )}
+          </CustomLink>
+        ))}
+      </Gallery>
     </>
   );
 };
@@ -211,10 +107,14 @@ const Gallery = styled.div`
   padding: 24px;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    /* grid-template-columns: repeat(2, 1fr);
     column-gap: 40px;
     padding: 40px;
-    align-items: start;
+    align-items: start; */
+    column-count: 2;
+    display: inline-block;
+    column-gap: 40px;
+    width: 100%;
   }
   @media (min-width: 1440px) {
     /* grid-template-columns: repeat(4, 1fr);
@@ -234,6 +134,9 @@ const PaintingSection = styled.div`
   height: fit-content;
   cursor: pointer;
   transition: all 0.3s ease-in;
+  @media (min-width: 768px) {
+    margin-bottom: 40px;
+  }
   @media (min-width: 1440px) {
     margin-bottom: 40px;
   }
@@ -246,6 +149,8 @@ const ImageWrapper = styled.div`
   display: grid;
 
   @media (min-width: 768px) {
+    display: unset;
+    overflow: visible;
   }
   @media (min-width: 1440px) {
     display: unset;
@@ -274,7 +179,14 @@ const Overlay = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.463);
+  background-color: rgba(0, 0, 0, 0.396);
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.364);
+  }
+  @media (min-width: 768px) {
+    height: 99%;
+  }
 
   @media (min-width: 1440px) {
     height: 99%;
@@ -324,52 +236,7 @@ const Artist = styled.p`
   margin-top: 7px;
 `;
 
-const Piece1 = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-rows: auto 1fr;
-  row-gap: 24px;
-  @media (min-width: 768px) {
-    row-gap: 40px;
-  }
-  @media (min-width: 1440px) {
-    width: 100%;
-    grid-template-columns: repeat(4, 1fr);
-    /* grid-template-columns: none; */
-    column-gap: 24px;
-  }
-`;
-const Piece2 = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-rows: auto 1fr;
-  row-gap: 24px;
-  @media (min-width: 768px) {
-    row-gap: 40px;
-  }
-  @media (min-width: 1440px) {
-    width: 100%;
-    grid-template-columns: repeat(4, 1fr);
-    /* grid-template-columns: none; */
-    column-gap: 24px;
-  }
-`;
-// const Piece3 = styled.div`
-//   display: grid;
-//   width: 100%;
-//   grid-template-rows: auto 1fr;
-//   row-gap: 24px;
-//   @media (min-width: 768px) {
-//     row-gap: 40px;
-//   }
-/* @media (min-width: 1440px) {
-    width: 100%;
-    grid-template-columns: repeat(4, 1fr); */
-/* grid-template-columns: none; */
-/* column-gap: 24px;
-  }
-`; */
-// const Piece4 = styled.div`
+// const Piece1 = styled.div`
 //   display: grid;
 //   width: 100%;
 //   grid-template-rows: auto 1fr;
@@ -384,3 +251,22 @@ const Piece2 = styled.div`
 /* column-gap: 24px;
   }
 `; */
+// const Piece2 = styled.div`
+//   display: grid;
+//   width: 100%;
+//   grid-template-rows: auto 1fr;
+//   row-gap: 24px;
+//   @media (min-width: 768px) {
+//     row-gap: 40px;
+//   }
+//   @media (min-width: 1440px) {
+//     width: 100%;
+//     grid-template-columns: repeat(4, 1fr);
+/* grid-template-columns: none; */
+//     column-gap: 24px;
+//   }
+// `;
+
+const CustomLink = styled(Link)`
+  text-decoration: none;
+`;

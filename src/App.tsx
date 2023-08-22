@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { lazy, Suspense, useState } from "react";
 import Header from "./components/Header";
 import { Painting } from "./types";
@@ -23,7 +23,12 @@ function App() {
           path="/"
           element={
             <Suspense fallback={"Loading..."}>
-              <Home paintings={paintings} setPaintings={setPaintings} />
+              <Home
+                paintings={paintings}
+                setPaintings={setPaintings}
+                slideshowRunning={slideshowRunning}
+                setSlideshowRunning={setSlideshowRunning}
+              />
             </Suspense>
           }
         />
@@ -40,6 +45,7 @@ function App() {
             </Suspense>
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Main>
   );

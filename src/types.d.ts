@@ -1,4 +1,5 @@
 export interface Painting {
+  _id: string;
   name: string;
   year: string;
   source: string;
@@ -15,6 +16,7 @@ export interface Painting {
     image: string;
     name: string;
   };
+  [key: number]: any;
 }
 
 // interface Gallery {

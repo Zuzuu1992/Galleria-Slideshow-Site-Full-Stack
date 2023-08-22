@@ -34,6 +34,10 @@ const Svg = styled(attrs)`
   width: 16px;
   height: 16px;
   cursor: pointer;
+  transition: fill 0.3s;
+  &:hover {
+    fill: #d8d8d8;
+  }
   @media (min-width: 768px) {
     width: 24px;
     height: 24px;

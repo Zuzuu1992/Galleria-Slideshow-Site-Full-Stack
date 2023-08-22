@@ -21,14 +21,24 @@ interface SlideshowProps {
 
 const Slideshow: React.FC<SlideshowProps> = ({
   paintings,
-  setPaintings,
   enlargedImageVisible,
   setEnlargedImageVisible,
 }) => {
+
+
   const { index } = useParams<{ index: string | undefined }>();
-  const [currentIndex, setCurrentIndex] = useState<number>(
-    parseInt(index || "0")
-  );
+  const initialIndex = parseInt(index || "0"); // Parse the index from the URL parameter
+  const [currentIndex, setCurrentIndex] = useState<number>(initialIndex);
+  // const { index } = useParams<{ index: string | undefined }>();
+  // const [currentIndex, setCurrentIndex] = useState<number>(
+  //   parseInt(index || "0")
+  // );
+
+  // const chunkIndex = Math.floor(Number(index) / 7); // Assuming chunk size is 7
+  // const paintingIndexInChunk = Number(index) % 7;
+
+  // const selectedChunk = paintings[chunkIndex];
+  // const selectedPainting = selectedChunk[paintingIndexInChunk];
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
 
   const apiUrl = import.meta.env.VITE_REACT_APP_BASE_API_URL;
@@ -57,16 +67,6 @@ const Slideshow: React.FC<SlideshowProps> = ({
   const slidePercentage = (currentSlide / totalSlides) * 100;
 
   const currentPainting = paintings[currentIndex];
-
-  // const handleBackClick = () => {
-  //   const newIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-  //   setCurrentIndex(newIndex);
-  // };
-
-  // const handleNextClick = () => {
-  //   const newIndex = (currentIndex + 1) % totalSlides;
-  //   setCurrentIndex(newIndex);
-  // };
 
   const handleBackClick = () => {
     if (currentIndex > 0) {
@@ -147,10 +147,12 @@ const Slideshow: React.FC<SlideshowProps> = ({
       </LineWrapper>
       {enlargedImageVisible && (
         <EnlargedImageOverlay>
-          <Close onClick={toggleEnlargedImage}>close</Close>
-          <EnlargedImage
-            src={`${apiUrl}${paintings[currentIndex].images.gallery}`}
-          />
+          <InsideDiv>
+            <Close onClick={toggleEnlargedImage}>close</Close>
+            <EnlargedImage
+              src={`${apiUrl}${paintings[currentIndex].images.gallery}`}
+            />
+          </InsideDiv>
         </EnlargedImageOverlay>
       )}
       <Footer>
@@ -281,6 +283,10 @@ const Enlarge = styled.div`
   left: 16px;
   background-color: rgba(0, 0, 0, 0.745);
   cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.251);
+  }
   @media (min-width: 768px) {
     top: auto;
     bottom: 16px;
@@ -360,10 +366,9 @@ const ArtistImage = styled.img`
     justify-self: start;
   }
   @media (min-width: 1440px) {
-    /* grid-row: 1/2; */
     align-self: end;
     justify-self: auto;
-    /* transform: translate(0%, 40%); */
+
     z-index: 1001;
     margin-top: -80px !important;
   }
@@ -433,6 +438,10 @@ const SourceLink = styled.a`
   text-decoration-line: underline;
   text-align: left;
   margin-top: 68px;
+  transition: color 0.3s;
+  &:hover {
+    color: #000;
+  }
   @media (min-width: 768px) {
     padding-left: 115px;
   }
@@ -516,6 +525,19 @@ const EnlargedImageOverlay = styled.div`
   @media (min-width: 768px) {
     padding: 40px;
   }
+  /* @media (min-width: 1440px) {
+   
+  } */
+`;
+
+const InsideDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+  }
 `;
 
 const Close = styled.p`
@@ -530,13 +552,21 @@ const Close = styled.p`
   text-transform: uppercase;
   align-self: flex-end;
   cursor: pointer;
+  transition: color 0.3s;
+  &:hover {
+    color: rgba(255, 255, 255, 0.248);
+  }
+  @media (min-width: 768px) {
+  }
 `;
 
 const EnlargedImage = styled.img`
   max-width: 100%;
-  max-height: 80%;
+  max-height: 100%;
   @media (min-width: 768px) {
-    max-height: 100%;
+  }
+  @media (min-width: 1440px) {
+    max-height: 80%;
   }
 `;
 
