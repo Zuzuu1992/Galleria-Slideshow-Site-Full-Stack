@@ -27,18 +27,8 @@ const Slideshow: React.FC<SlideshowProps> = ({
 
 
   const { index } = useParams<{ index: string | undefined }>();
-  const initialIndex = parseInt(index || "0"); // Parse the index from the URL parameter
+  const initialIndex = parseInt(index || "0"); 
   const [currentIndex, setCurrentIndex] = useState<number>(initialIndex);
-  // const { index } = useParams<{ index: string | undefined }>();
-  // const [currentIndex, setCurrentIndex] = useState<number>(
-  //   parseInt(index || "0")
-  // );
-
-  // const chunkIndex = Math.floor(Number(index) / 7); // Assuming chunk size is 7
-  // const paintingIndexInChunk = Number(index) % 7;
-
-  // const selectedChunk = paintings[chunkIndex];
-  // const selectedPainting = selectedChunk[paintingIndexInChunk];
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
 
   const apiUrl = import.meta.env.VITE_REACT_APP_BASE_API_URL;
@@ -176,6 +166,8 @@ const Slideshow: React.FC<SlideshowProps> = ({
     </Wrapper>
   );
 };
+
+export default Slideshow;
 
 const Wrapper = styled.div`
   height: 100%;
@@ -525,9 +517,6 @@ const EnlargedImageOverlay = styled.div`
   @media (min-width: 768px) {
     padding: 40px;
   }
-  /* @media (min-width: 1440px) {
-   
-  } */
 `;
 
 const InsideDiv = styled.div`
@@ -570,4 +559,4 @@ const EnlargedImage = styled.img`
   }
 `;
 
-export default Slideshow;
+
