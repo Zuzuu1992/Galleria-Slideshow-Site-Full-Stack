@@ -24,10 +24,8 @@ const Slideshow: React.FC<SlideshowProps> = ({
   enlargedImageVisible,
   setEnlargedImageVisible,
 }) => {
-
-
   const { index } = useParams<{ index: string | undefined }>();
-  const initialIndex = parseInt(index || "0"); 
+  const initialIndex = parseInt(index || "0");
   const [currentIndex, setCurrentIndex] = useState<number>(initialIndex);
   const [sourceUrl, setSourceUrl] = useState<string | null>(null);
 
@@ -88,7 +86,7 @@ const Slideshow: React.FC<SlideshowProps> = ({
             showStatus={false}
             infiniteLoop
           >
-            {paintings.map((painting, idx) => (
+            {paintings.map((painting) => (
               <div key={painting.name} className="4">
                 <Slide className="5">
                   <Intro>
@@ -558,5 +556,3 @@ const EnlargedImage = styled.img`
     max-height: 80%;
   }
 `;
-
-
